@@ -92,6 +92,15 @@ end
 
 ############################################################################
 
+cat_output  = `cat -E #{gettysburg_file} #{spaced_file}`
+rcat_output = `rcat -E #{gettysburg_file} #{spaced_file}`
+
+unless cat_output == rcat_output
+  fail "Failed 'cat -E [f1 f2] == rcat -E [f1 f2]'" 
+end
+
+############################################################################
+
 `cat #{gettysburg_file}`
 cat_success = $?
 
@@ -125,7 +134,7 @@ unless cat_process.exitstatus == 1 && rcat_process.exitstatus == 1
   fail "Failed 'cat and rcat exit codes match on bad switch"
 end
 
-unless rcat_err == "rcat: invalid option: -x\nusage: rcat [-bns] [file ...]\n"
+unless rcat_err == "rcat: invalid option: -x\nusage: rcat [-bnsE] [file ...]\n"
   fail "Failed 'rcat provides usage instructions when given invalid option"
 end
 

@@ -23,6 +23,7 @@ module RCat
       parser.on("-n") { params[:line_numbering_style] ||= :all_lines         }
       parser.on("-b") { params[:line_numbering_style]   = :significant_lines }
       parser.on("-s") { params[:squeeze_extra_newlines] = true               }
+      parser.on("-E") { params[:show_ends]              = true                            } 
       
       files = parser.parse(argv)
 

@@ -3,6 +3,7 @@ module RCat
     def initialize(params)
       @line_numbering_style   = params[:line_numbering_style]
       @squeeze_extra_newlines = params[:squeeze_extra_newlines]
+      @show_ends = params[:show_ends]
     end
 
     def render(data)
@@ -14,10 +15,10 @@ module RCat
 
     private
 
-    attr_reader :line_numbering_style, :squeeze_extra_newlines, :line_number
+    attr_reader :line_numbering_style, :squeeze_extra_newlines, :show_ends, :line_number
 
     def render_line(lines)
-      current_line = lines.next 
+      current_line = add_endline(lines.next)
       current_line_is_blank = current_line.chomp.empty?
 
       case line_numbering_style
@@ -33,6 +34,10 @@ module RCat
       end
 
       skip_extra_newlines(lines) if (squeeze_extra_newlines && current_line_is_blank)
+    end
+
+    def add_endline(line)
+      show_ends ? line.gsub("\n", "$\n")  : line
     end
 
     def skip_extra_newlines(lines)
