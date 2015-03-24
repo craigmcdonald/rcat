@@ -32,10 +32,10 @@ module RCat
         increment_line_number
       end
 
-      skip_empty_lines(lines) if (squeeze_extra_newlines && current_line_is_blank)
+      skip_extra_newlines(lines) if (squeeze_extra_newlines && current_line_is_blank)
     end
 
-    def skip_empty_lines(lines)
+    def skip_extra_newlines(lines)
       lines.next while lines.peek.chomp.empty?
     end
 
