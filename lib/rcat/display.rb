@@ -25,21 +25,22 @@ module RCat
         print_labeled_line(current_line)
         increment_line_number  
       when :significant_lines
-        if current_line_is_blank
-          print_unlabeled_line(current_line)
-          # skip incrementing line number, want to only count significant lines
-        else
-          print_labeled_line(current_line)
-          increment_line_number
-        end
+        print_label_if_significant_line(current_line, current_line_is_blank)
+        increment_line_number unless current_line_is_blank
       else
         print_unlabeled_line(current_line)
         increment_line_number
       end
 
-      if squeeze_extra_newlines && current_line_is_blank
-         lines.next while lines.peek.chomp.empty?
-      end
+      skip_empty_lines(lines) if (squeeze_extra_newlines && current_line_is_blank)
+    end
+
+    def skip_empty_lines(lines)
+      lines.next while lines.peek.chomp.empty?
+    end
+
+    def print_label_if_significant_line(line,truth)
+      truth ? print_unlabeled_line(line) : print_labeled_line(line)
     end
 
     def print_labeled_line(line)
